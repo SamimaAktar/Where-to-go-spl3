@@ -44,17 +44,18 @@ def predict(id):
       location=model.getLocationInfo()
       all_place_info=list()
       index=0
-      for id in place_id:
+      for pid in place_id:
+        print("Myid: ", pid)
         #name=getName(location[index])
-        name=getPlaceName(location[index])
+        name=getPlaceName(location[pid])
         #x=name.split(',')
         single_place_info=defaultdict(list)
-        distance=getDistance(location[index])
+        distance=getDistance(location[pid])
         travel_time=getTravelTime(distance,40)
-        lat,lng=location[index]
+        lat,lng=location[pid]
         single_place_info['lat']=lat
         single_place_info['lng']=lng
-        single_place_info['place_id']=id
+        single_place_info['place_id']=pid
         single_place_info['place_name']=name[0]['name']
         single_place_info['country']=name[0]['cc']
         #single_place_info['place_name']=str(x[0])+","+str(x[1])+","+str(x[2])
@@ -73,7 +74,7 @@ def predict(id):
 
 def home_view(request,*arg,**kwargs):
 
-    user=predict(12)
+    user=predict(80)
     return render(request,'home.html',user)
 
 def recommendation(request,*arg,**kwargs):

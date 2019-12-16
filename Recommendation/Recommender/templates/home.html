@@ -1,4 +1,6 @@
 {% load static %}
+
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,29 +30,59 @@
 	  text-align: center;
 	  font-family: 'Open Sans', sans-serif;
 	}
+
+	.wordart {
+	  font-family: Arial, sans-serif;
+	  font-size: 1.5em;
+	  font-weight: bold;
+	  position: relative;
+	  z-index: 1;
+	  display: inline-block;
+	  -webkit-font-smoothing: antialiased;
+	  -moz-osx-font-smoothing: grayscale;
+	}
+
+
+	.wordart.slate {
+		transform: scale(1, 1.5);
+		-webkit-transform: scale(1, 1.5);
+		-moz-transform: scale(1, 1.5);
+		-o-transform: scale(1, 1.5);
+		-ms-transform: scale(1, 1.5);
+	}
+
+	.wordart.slate .text {
+		font-family: Times, 'Times New Roman', serif;
+		font-weight: normal;
+		color: #2F5485;
+		text-shadow: 0.03em 0.03em 0px #B3B3B3;
+	}
+
 </style>
 <body>
 	<nav  class="shadow-sm p-3 bg-white navbar  navbar-expand-sm navbar-dark fixed-top">
 	  <!-- Brand -->
 	  <a class="navbar-brand" href="#">
+
 	  	<img height="60" width="60" src="{% static 'mysite/images/icon.png' %}">
+		  		 <div class="wordart slate"><span class="text">WhereToGo</span></div>
 	  </a>
 
 	  <!-- Links -->
 	  <ul class="navbar-nav ml-5">
-	    <li class="nav-item ml-2">
-	      <a class="nav-link text-dark"  href="#">Home</a>
-	    </li>
-	    <li class="nav-item ml-2">
-	      <a class="nav-link text-dark"  href="#">About</a>
-	    </li>
-	    <li class="nav-item ml-2">
-	      <a class="nav-link text-dark" href="#">Contacts</a>
-	    </li>
+<!--	    <li class="nav-item ml-2">-->
+<!--	      <a class="nav-link text-dark"  href="#">Home</a>-->
+<!--	    </li>-->
+<!--	    <li class="nav-item ml-2">-->
+<!--	      <a class="nav-link text-dark"  href="#">About</a>-->
+<!--	    </li>-->
+<!--	    <li class="nav-item ml-2">-->
+<!--	      <a class="nav-link text-dark" href="#">Contacts</a>-->
+<!--	    </li>-->
 	    <li class="nav-item">
 	    	<form action="{% url 'recommendation' %}" method="post">
 	    		{% csrf_token %}
-	    		<input name="id" class="py-auto" style="width:240px;height:37px; border-color:blue;border-width:.8px;outline:none;margin-left:300px;padding-left:6px;color:black;" placeholder="Enter User Id" type="text" name="id">
+	    		<input name="id" class="py-auto" style="width:240px;height:37px; border-color:blue;border-width:.8px;outline:none;margin-left:300px;padding-left:6px;color:black;" value="0" placeholder="Enter User Id" type="text" name="id">
 	    		<button type="submit" class="py-auto" style="width:120px;height:37.5px;background:blue;color:white;border: none">Recommend</button>
 	    	</form>
 	    </li>
@@ -58,12 +90,12 @@
 	  </ul>
 
 	  <ul class=" navbar-nav ml-auto">
-	  	<li class="nav-item">
-	  		<a class="nav-link text-primary" href="sign_in" style="font-size:18px" href="">Sign In</a>
-	  	</li>
-	  	<li class="nav-item">
-	  		<a class="nav-link text-primary" href="sign_up"style="font-size:18px" href="">Sign Up</a>
-	  	</li>
+<!--	  	<li class="nav-item">-->
+<!--	  		<a class="nav-link text-primary" href="sign_in" style="font-size:18px" href="">Sign In</a>-->
+<!--	  	</li>-->
+<!--	  	<li class="nav-item">-->
+<!--	  		<a class="nav-link text-primary" href="sign_up"style="font-size:18px" href="">Sign Up</a>-->
+<!--	  	</li>-->
 	  </ul>
 	</nav>
 	<div style="height:70px"></div>
@@ -74,15 +106,15 @@
 				<div style="background-image:url({% static 'mysite/images/alamo.jpg' %});background-size: cover;" class="col-2 shadow-md">></div>
 				<div class="col-10">
 					<p>
-						Place_Id: {{place_info.place_id}}(lat:{{place_info.lat}},long:{{place_info.lng}})
+						<b>Place Id:</b> {{place_info.place_id}} <i>(Latitute: {{place_info.lat|stringformat:".4f"}}, Longtitude: {{place_info.lng|stringformat:".4f"}})</i>
 						<br>
-						Place_Name: {{place_info.place_name}}
+						<b>Place Name:</b> {{place_info.place_name}}
 						<br>
-						Counytry_Name: {{place_info.country}}
+						<b>Counytry Name:</b> {{place_info.country}}
 						<br>
-						Distance From: {{place_info.distance}} km
+						<b>Distance From:</b> {{place_info.distance|stringformat:".2f"}} km
 						<br>
-						Travel Time: {{place_info.travel_time}} hr
+						<b>Travel Time:</b> {{place_info.travel_time|stringformat:".3f"}} hr
 					
 					</p>
 				</div>
@@ -105,7 +137,7 @@
 				type: 'Feature',
 		    	geometry: {
 			      	type: 'Point',
-			      	coordinates:["{{place_info.lng}}","{{place_info.lat}}"] 
+			      	coordinates:["{{place_info.lng}}","{{place_info.lat}}"]
 		    	},
 			    properties: {
 			      place_name: "{{place_info.place_name}}",
@@ -128,7 +160,7 @@ console.log(geojson.features[2].geometry.coordinates);
 	container: 'map',
 	style: 'mapbox://styles/mapbox/streets-v11',
 	center: geojson.features[0].geometry.coordinates,
-  	zoom:12
+  	zoom:10
 	});
 
 

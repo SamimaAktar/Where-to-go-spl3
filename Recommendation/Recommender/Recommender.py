@@ -32,7 +32,7 @@ class Recommender:
 
             overall_scores = (1.0 - alpha - beta) * U_scores + alpha * S_scores + beta * G_scores
 
-            predicted = list(reversed(overall_scores.argsort()))[:6]
+            predicted = list(reversed(overall_scores.argsort()))[:5]
             
             return predicted
     def normalize(self,scores):
